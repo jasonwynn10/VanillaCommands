@@ -2,37 +2,35 @@
 
 namespace DenielWorld\VanillaCommands\utils;
 
-use pocketmine\network\mcpe\protocol\PlaySoundPacket;
-use pocketmine\Player;
+class SoundManager {
+	//IMPORTANT TODO - Not all the sounds were implemented, since there was too many vanilla sounds, and I got bored entering the same thing over and over lol. In other words, PRs that will complete the const list, const array, name array, const string array, and ids array are welcome and very appreciated :D. The list for the leftover sounds ends at the bottom, make sure to follow the same array relation for appropriate sounds. Example: in const array key 67 could be RANDOM_SOUND, that means in other arrays key 67 should also point to that sound, such as in names array it would be kind of like "random.sound". Hope you get the point.
 
-class SoundManager
-{
-    //IMPORTANT TODO - Not all the sounds were implemented, since there was too many vanilla sounds, and I got bored entering the same thing over and over lol. In other words, PRs that will complete the const list, const array, name array, const string array, and ids array are welcome and very appreciated :D. The list for the leftover sounds ends at the bottom, make sure to follow the same array relation for appropriate sounds. Example: in const array key 67 could be RANDOM_SOUND, that means in other arrays key 67 should also point to that sound, such as in names array it would be kind of like "random.sound". Hope you get the point.
+	CONST IDS = ["beacon.power" => -1, "unknown.sound" => 0, "ambient.weather.lightning.impact" => 1, "ambient.weather.rain" => 2, "ambient.weather.thunder" => 3, "armor.equip_chain" => 4, "armor.equip_diamond" => 5, "armor.equip_generic" => 6, "armor.equip_gold" => 7, "armor.equip_iron" => 8, "armor.equip_leather" => 9, "beacon.activate" => 10, "beacon.ambient" => 11, "beacon.deactivate" => 12, "block.bamboo.break" => 13, "block.bamboo.fall" => 14, "block.bamboo.hit" => 15, "block.bamboo.place" => 16, "block.bamboo.step" => 17, "block.bamboo_sapling.break" => 18, "block.bamboo_sapling.place" => 19, "block.barrel.close" => 20, "block.barrel.open" => 21, "block.bell.hit" => 22, "block.campfire.crackle" => 23, "block.chorusflower.death" => 24, "block.chorusflower.grow" => 25, "block.composter.empty" => 26, "block.composter.fill" => 27, "block.composter.fill_success" => 28, "block.composter.ready" => 29, "block.end_portal.spawn" => 30];
 
-    CONST IDS = ["beacon.power" => -1, "unknown.sound" => 0, "ambient.weather.lightning.impact" => 1, "ambient.weather.rain" => 2, "ambient.weather.thunder" => 3, "armor.equip_chain" => 4, "armor.equip_diamond" => 5, "armor.equip_generic" => 6, "armor.equip_gold" => 7, "armor.equip_iron" => 8, "armor.equip_leather" => 9, "beacon.activate" => 10, "beacon.ambient" => 11, "beacon.deactivate" => 12, "block.bamboo.break" => 13, "block.bamboo.fall" => 14, "block.bamboo.hit" => 15, "block.bamboo.place" => 16, "block.bamboo.step" => 17, "block.bamboo_sapling.break" => 18, "block.bamboo_sapling.place" => 19, "block.barrel.close" => 20, "block.barrel.open" => 21, "block.bell.hit" => 22, "block.campfire.crackle" => 23, "block.chorusflower.death" => 24, "block.chorusflower.grow" => 25, "block.composter.empty" => 26, "block.composter.fill" => 27, "block.composter.fill_success" => 28, "block.composter.ready" => 29, "block.end_portal.spawn" => 30];
+	public function isValidId(int $id) : bool {
+		return in_array($id, self::IDS);
+	}
 
-    public function isValidId(int $id) : bool {
-        return in_array($id, self::IDS);
-    }
+	public function isValidName(string $name) : bool {
+		return in_array($name, array_keys(self::IDS));
+	}
 
-    public function isValidName(string $name) : bool {
-        return in_array($name, array_keys(self::IDS));
-    }
+	public function getNameFromId(int $soundId) : ?string {
+		$key = array_search($soundId, self::IDS);
+		if($key !== false) {
+			return $key;
+		}
+		return null;
+	}
 
-    public function getNameFromId(int $soundId) : ?string {
-        $key = array_search($soundId, self::IDS);
-        if($key !== false)
-            return $key;
-        return null;
-    }
+	public function getIdFromName(string $soundName) : ?int {
+		if(isset(self::IDS[$soundName])) {
+			return self::IDS[$soundName];
+		}
+		return null;
+	}
 
-    public function getIdFromName(string $soundName) : ?int {
-        if(isset(self::IDS[$soundName]))
-            return self::IDS[$soundName];
-        return null;
-    }
-
-    /*
+	/*
 Todo - Add the rest of the vanilla sounds from this list. Feel free to PR these if you know what ur doing.
 block.end_portal_frame.fill
 block.false_permissions
